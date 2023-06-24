@@ -1,3 +1,8 @@
+'''
+author:        jonnyzhang02 <71881972+jonnyzhang02@users.noreply.github.com>
+lastModified:  2023-06-25 01:48:43
+Copyright © zhangyang0207@bupt.edu.cn All rights reserved
+'''
 import numpy as np
 import gym
 import torch
@@ -210,18 +215,19 @@ if IS_TRAIN:
             agent.update(32)
             if terminated:
                 print(f'第{episode}局游戏成功,reward为{reward}')
-                os.makedirs(f'./models/episode{episode}', exist_ok=True)
-                agent.save_model(f'./models/episode{episode}/ddpg')
                 break
             if truncated:
                 print(f'第{episode}局游戏失败,reward为{reward}')
                 break
+            if episode % 50 == 0:
+                os.makedirs(f'./models/episode{episode}', exist_ok=True)
+                agent.save_model(f'./models/episode{episode}/ddpg')
     # if episode % 50 == 0:
     #     print(f'第{episode}局的动作为{actions}')
 
 else:
     # Load the trained model
-    agent.load_model("./models/ddpg")
+    agent.load_model("./models/episode200/ddpg")
 
     # 初始化
     state, _ = env.reset()
